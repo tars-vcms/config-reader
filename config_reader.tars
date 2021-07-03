@@ -1,0 +1,39 @@
+module vcms
+{
+
+	enum ConfigStatus{
+		Online = 1,
+		Offline
+	};
+
+	struct ConfigCacheEntity{
+		0 require string Key;
+		1 require ConfigStatus Status;
+		2 require string Value;
+	};
+
+	struct PutConfigRsp{
+		0 require ConfigCacheEntity Config;
+	    1 optional int TTL = 86400;
+	};
+
+	struct PutConfigReq{
+        0 require string Key;
+        1 require int TTL = 86400;
+	};
+
+    struct GetConfigRsp{
+        0 require string Key;
+        1 require ConfigStatus Status;
+        2 require string Value;
+	};
+
+	struct GetConfigReq{
+        0 require string Key;
+	};
+	interface ConfigReader
+	{
+        int PutConfig(PutConfigReq req, out PutConfigRsp rsp);
+        int GetConfig(GetConfigReq req, out GetConfigRsp rsp);
+	};
+};
